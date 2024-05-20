@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<project>                                  
+  <executable name="dist/pic32mx460_pim_e16_int_dyn/production/cdc_com_port_single.X.production.elf">                 
+    <memory name="program">                 
+      <units>bytes</units>                 
+      <length>531968</length>                 
+      <used>20888</used>                     
+      <free>511080</free>                     
+    </memory>                              
+    <memory name="data">              
+      <units>bytes</units>                 
+      <length>32768</length>                 
+      <used>888</used>                     
+      <free>31880</free>                     
+    </memory>                              
+  </executable>                            
+</project>                                 
