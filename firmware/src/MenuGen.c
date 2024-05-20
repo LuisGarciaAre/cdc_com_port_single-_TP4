@@ -82,6 +82,12 @@ void MENU_Execute(S_ParamGen *pParam, bool connectionIsRemote)
                         app_genData.flagUpdateAffichageLCD = true;
                     }
                 }
+                
+                if(app_genData.updateParams == true)
+                {
+                    Update_GENparams(pParam);
+                    app_genData.updateParams = false;
+                }
             }
             else
             {
@@ -418,8 +424,7 @@ bool MenuModifParams(S_ParamGen *pParams, S_ParamGen *tempParams, uint8_t indexM
     if(Pec12IsOK() == true)
     {
         Pec12ClearOK();
-        GENSIG_UpdateSignal(pParams);
-        GENSIG_UpdatePeriode(pParams);
+        Update_GENparams(pParams);
         *flagUpdateDisplay = true;
         flagEndModif = true;
     }
@@ -518,3 +523,9 @@ bool SaveParamsOnMemory(S_ParamGen *pParam)
     
     return flagBackToMenu;
 }/*Fin fonction SaveParamsOnMemory*/
+
+void Update_GENparams(S_ParamGen *pParams)
+{
+    GENSIG_UpdateSignal(pParams);
+    GENSIG_UpdatePeriode(pParams);
+}

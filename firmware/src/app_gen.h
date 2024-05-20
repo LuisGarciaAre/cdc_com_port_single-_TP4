@@ -122,6 +122,8 @@ typedef struct
     
     bool flagUpdateAffichageLCD;
     bool flagAskToSave;
+    
+    bool updateParams;
 
     /* TODO: Define any additional data used by the application. */
 

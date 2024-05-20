@@ -97,6 +97,8 @@ bool MenuModifParams(S_ParamGen *pParams, S_ParamGen *tempParams, uint8_t indexM
  *********************************************************************/
 bool SaveParamsOnMemory(S_ParamGen *pParam);
 
+void Update_GENparams(S_ParamGen *pParams);
+
 #endif
 
 

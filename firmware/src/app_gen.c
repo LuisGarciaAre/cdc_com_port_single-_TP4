@@ -132,6 +132,7 @@ void APP_GEN_Initialize ( void )
     app_genData.strReceived = false;
     app_genData.flagAskToSave = false;
     app_genData.flagUpdateAffichageLCD = true;
+    app_genData.updateParams = false;
 
     
     /* TODO: Initialize your application's state machine and other
@@ -292,8 +293,9 @@ void APP_GEN_CRAZY(uint8_t* str, uint32_t tailleChaine)
         if(app_genData.strReceived == true)
         {
             app_genData.strReceived = false;
+            app_genData.updateParams = GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams);
 
-            if(GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams) == true)
+            if(app_genData.updateParams == true)
             {
                 SendMessage((int8_t*)strHERE, &RemoteParamGen, saveParams);
                 memcpy(str, strHERE, strlen(strHERE));
