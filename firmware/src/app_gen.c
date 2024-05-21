@@ -248,7 +248,15 @@ void APP_GEN_Tasks ( void )
     }
 }
 
-
+/**********************************************************************************************
+ * Nom de fonction: APP_GEN_STORE_STR
+ * Auteur: LGA & JAR
+ * Parametres:
+ *  Entrée: uint32_t tailleChaine, pointeur: uint8_t str
+ *  Sortie: -
+ * 
+ * Description: Fonction qui sauvegarde le message reçu sur l'USb
+ **********************************************************************************************/
 void APP_GEN_STORE_STR(uint8_t* str, uint32_t tailleChaine)
 {
     app_genData.strReceived = true;
@@ -261,6 +269,7 @@ void APP_GEN_STORE_STR(uint8_t* str, uint32_t tailleChaine)
     memcpy(app_genData.str, str, tailleChaine);
     app_genData.str[tailleChaine] = '\0';
 }
+
 
 void APP_GEN_GET_NEWSTR(uint8_t* strToSend, uint32_t* taillechaine)
 {
@@ -277,25 +286,37 @@ void APP_GEN_GET_NEWSTR(uint8_t* strToSend, uint32_t* taillechaine)
     
 }
 
+/**********************************************************************************************
+ * Nom de fonction: APP_GEN_GETSET_STR
+ * Auteur: LGA & JAR
+ * Parametres:
+ *  Entrée: uint32_t tailleChaine, pointeur: uint8_t str
+ *  Sortie: -
+ * 
+ * Description: Fonction qui recupère le message reçu par l'USB, copie les caractères dans un tableau local,
+ * extrait les valeurs des paramètres du générateur, indique qu'il faut mettre à jour
+ * et remplissage du buffer de l'USB avec la confirmation de réception
+ **********************************************************************************************/
 void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 {
-    char strHERE[APP_GEN_TAILLE_MAX_STR];
+    char strMessage[APP_GEN_TAILLE_MAX_STR];    // Tableau de sauvegarde du message
     
     if(tailleChaine > APP_GEN_TAILLE_MAX_STR)
     {
         tailleChaine = APP_GEN_TAILLE_MAX_STR;
     }
     
-    memcpy(strHERE, str, tailleChaine);
-    strHERE[tailleChaine] = '\0';
+    memcpy(strMessage, str, tailleChaine);  // Copie des caractères reçus
+    strMessage[tailleChaine] = '\0';    // Indique la fin de la cahaine
 
-
-    app_genData.updateParams = GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams);
+    // Indique qu'il faut mettre à jour
+    app_genData.updateParams = GetMessage((int8_t*)strMessage, &RemoteParamGen, &saveParams);
 
     if(app_genData.updateParams == true)
     {
-        SendMessage((int8_t*)strHERE, &RemoteParamGen, saveParams);
-        memcpy(str, strHERE, strlen(strHERE));
+        // Rempli le buffer de l'USB avec la confirmation de réception
+        SendMessage((int8_t*)strMessage, &RemoteParamGen, saveParams);
+        memcpy(str, strMessage, strlen(strMessage));
         app_genData.readyToSend = true;
         app_genData.flagUpdateAffichageLCD = true;
     }  
