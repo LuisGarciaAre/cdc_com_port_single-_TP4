@@ -33,10 +33,60 @@ typedef enum {
 // Prototypes des fonctions 
 /*--------------------------------------------------------*/
 
-void SendMessage(int8_t *USBSendBuffer, S_ParamGen *pParam, bool Saved);    // Fonction d'envoi d'un  message
-bool GetMessage(int8_t *USBReadBuffer, S_ParamGen *pParam, bool *SaveTodo); // Fonction de reception  d'un  message
+/**********************************************************************************************
+ * Nom de fonction: SendMessage
+ * Auteur: LGA & JAR
+ * Parametres:
+ *  Entrée: poiteur: int8_t USBReadBuffer, S_ParamGen pParam, bool Saved
+ *  Sortie: -
+ * 
+ * Description: Fonction d'envoi d'un  message
+ * Rempli le tampon d'émission pour USB en fonction des paramètres du générateur
+ * Format du message
+ *  !S=TF=2000A=10000O=+5000WP=0#
+ *  !S=TF=2000A=10000O=-5000WP=1#
+ **********************************************************************************************/
+void SendMessage(int8_t *USBSendBuffer, S_ParamGen *pParam, bool Saved);    
 
-E_FormesSignal convertCharToForme(char* valChar);   // Converti les lettres en formes
-char* ConvertFormeToChar(E_FormesSignal forme); //Converti les formes en caractère
+
+/**********************************************************************************************
+ * Nom de fonction: GetMessage
+ * Auteur: LGA & JAR
+ * Parametres:
+ *  Entrée: poiteur: int8_t USBReadBuffer, S_ParamGen pParam, bool SaveTodo
+ *  Sortie: -
+ * 
+ * Description: Fonction de reception  d'un  message
+ * Met à jour les paramètres du generateur a partir du message recu
+ * Format du message
+ *  !S=TF=2000A=10000O=+5000W=0#
+ *  !S=PF=2000A=10000O=-5000D=100W=1#
+ **********************************************************************************************/
+bool GetMessage(int8_t *USBReadBuffer, S_ParamGen *pParam, bool *SaveTodo); 
+
+
+/**********************************************************************************************
+ * Nom de fonction: convertCharToForme
+ * Auteur: LGA & JAR
+ * Parametres:
+ *  Entrée: pointeur: char valChar
+ *  Sortie: E_FormesSignal
+ * 
+ * Description: Converti les lettres en formes
+ **********************************************************************************************/
+E_FormesSignal convertCharToForme(char* valChar);   
+
+
+
+/**********************************************************************************************
+ * Nom de fonction: ConvertFormeToChar
+ * Auteur: LGA & JAR
+ * Parametres:
+ *  Entrée: E_FormesSignal forme
+ *  Sortie: pointeur: char
+ * 
+ * Description: Converti les formes en caractère
+ **********************************************************************************************/
+char* ConvertFormeToChar(E_FormesSignal forme); 
 
 #endif

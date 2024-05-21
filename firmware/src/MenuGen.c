@@ -464,7 +464,6 @@ bool MenuModifParams(S_ParamGen *pParams, S_ParamGen *tempParams, uint8_t indexM
         *flagUpdateDisplay = true;
         flagEndModif = true;
     }
-    
     return flagEndModif;
 }/*Fin de MenuModifParams*/
 

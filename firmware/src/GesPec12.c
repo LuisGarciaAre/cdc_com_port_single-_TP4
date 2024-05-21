@@ -144,11 +144,10 @@ void ScanPec12 (bool ValA, bool ValB, bool ValPB)
    }
    
    // Gestion inactivite
-   // Eteint backligth si pas d'action sur pec12 ou btn s9 pendant 5 secondes
+   // Eteint backligth si pas d'action sur pec12, btnS9, flag update LCD pendant 5 secondes
    if((!DebounceIsPressed(&DescrB)) && (!DebounceIsPressed(&DescrPB))
        && (!BtnS9IsESC()) && (!BtnS9IsSave()) && (!app_genData.flagUpdateAffichageLCD))
    {
-       
        if(Pec12.InactivityDuration == TIMEOUT_INACTIVITY)
        {
            lcd_bl_off();

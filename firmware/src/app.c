@@ -31,7 +31,7 @@ controller that is integrated into your product or third party product
 (pursuant to the sublicense terms in the accompanying license agreement).
 
 You should refer to the license agreement accompanying this Software for
-additional information regarding your rights and obligations.
+additional information regarding your rights and obligations.S
 
 SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
 EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF
@@ -535,8 +535,10 @@ void APP_Tasks (void )
             appData.isWriteComplete = false;
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
             
-            // Récupération du message USB et remplissage du buffer USB
+            // Récupération le message USB et modifie la chaine avec la quitance 
+            // pour envoyer ver buffer USB
             APP_GEN_GETSET_STR(appData.readBuffer, appData.numBytesRead);
+            
             // Envoy du message USB
             USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                     &appData.writeTransferHandle,

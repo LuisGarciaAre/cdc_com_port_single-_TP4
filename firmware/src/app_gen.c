@@ -84,10 +84,10 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
     Application strings and buffers are be defined outside this structure.
 */
 
-APP_GEN_DATA app_genData;
-S_ParamGen LocalParamGen;
-S_ParamGen RemoteParamGen;
-bool saveParams = false;
+APP_GEN_DATA app_genData;   // Declaration de variable qui gere l'application app_gen
+S_ParamGen LocalParamGen;   // Declaration de variable de parametres generateur de signal local
+S_ParamGen RemoteParamGen;  // Declaration de variable de parametres generateur de signal remote
+bool saveParams = false;    // Declaration de variable qui indique la sauvegarde des parametres
 
 // *****************************************************************************
 // *****************************************************************************
@@ -179,35 +179,41 @@ void APP_GEN_Callback_TMR3(void)
 /********************************************************************************************************
  * Nom de fonction: APP_GEN_GETSET_STR
  * Auteur: [JAR & LGA]
- * Paramï¿½tres: 
+ * Parametres: 
  *   Entree: 
- *     - str : Pointeur vers la chaï¿½ne de caractï¿½res ï¿½ traiter (uint8_t*)
- *     - tailleChaine : Taille de la chaï¿½ne de caractï¿½res (uint32_t)
+ *     - str : Pointeur vers la chaine de caracteres a traiter (uint8_t*)
+ *     - tailleChaine : Taille de la chaine de caracteres (uint32_t)
  *   Sortie: Aucune
  * 
- * Description: Cette fonction copie une chaï¿½ne de caractï¿½res d'entrï¿½e dans un buffer local, puis utilise 
- *              cette chaï¿½ne pour mettre ï¿½ jour des paramï¿½tres ï¿½ distance. Si les paramï¿½tres sont mis ï¿½ jour, 
- *              elle renvoie la chaï¿½ne modifiï¿½e et active un drapeau pour mettre ï¿½ jour l'affichage LCD.
+ * Description: Cette fonction copie une chaine de caracteres d'entree dans un buffer local, puis utilise 
+ *              cette chaine pour mettre a jour des parametres a distance. Si les parametres sont mis a jour, 
+ *              elle renvoie la chaine modifiee et active un drapeau pour mettre a jour l'affichage LCD.
  * 
  ********************************************************************************************************/
 void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 {
     char strMessage[APP_GEN_TAILLE_MAX_STR];    // Tableau de sauvegarde du message
     
+    // Definie la taille maximale
     if(tailleChaine > APP_GEN_TAILLE_MAX_STR)
     {
         tailleChaine = APP_GEN_TAILLE_MAX_STR;
     }
     
-    memcpy(strMessage, str, tailleChaine);  // Copie des caractï¿½res reï¿½us
+    memcpy(strMessage, str, tailleChaine);  // Copie des carateres reçus sur tableau local
     strMessage[tailleChaine] = '\0';    // Indique la fin de la cahaine
-
-    app_genData.updateParams = GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams);
-
+    
+    // Indique qu'il faut mettre à jour si valeurs des parametres recuperes
+    app_genData.updateParams = GetMessage((int8_t*)strMessage, &RemoteParamGen, &saveParams);
+    
+    // Si valeurs recuperes
     if(app_genData.updateParams == true)
     {
-        SendMessage((int8_t*)strHERE, &RemoteParamGen, saveParams);
-        memcpy(str, strHERE, strlen(strHERE));
+        // Modifie la chaine recus en ajoutnt l'quitance de recepetion
+        SendMessage((int8_t*)strMessage, &RemoteParamGen, saveParams);
+        // Rempli le buffer de l'USB avec la confirmation de réception
+        memcpy(str, strMessage, strlen(strMessage));
+        // Indique la mise a jour du LCD
         app_genData.flagUpdateAffichageLCD = true;
     }  
 }
@@ -215,7 +221,7 @@ void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 /********************************************************************************************************
  * Nom de fonction: All_leds
  * Auteur: [DBS & LGA]
- * Paramï¿½tres: 
+ * Paramettres: 
  *   Entrï¿½e: state -> variable 8 bits non signï¿½, ï¿½tat des LEDs (1 pour allumer, 0 pour ï¿½teindre)
  *   Sortie: Aucune
  * 
@@ -248,12 +254,24 @@ void All_ledsBSP(bool stateLeds)
 
 }/*Fin de fonction All_leds*/
 
+/********************************************************************************************************
+ * Nom de fonction: APP_GEN_UPDATE_STATE_USB
+ * Auteur: [JAR & LGA]
+ * Parametres: 
+ *   Entree: 
+ *     - state : Etat de la connexion USB (bool)
+ *   Sortie: Aucune
+ * 
+ * Description: Cette fonction met a jour l'etat de la connexion USB et active les flags pour mettre a jour 
+ *              l'affichage LCD et les parametres pour le DAC.
+ * 
+ ********************************************************************************************************/
 void APP_GEN_UPDATE_STATE_USB(bool state)
 {
     app_genData.usbIsConnected = state;
     app_genData.flagUpdateAffichageLCD = true;
     app_genData.updateParams = true;
-}
+}/*Fin de fonction APP_GEN_UPDATE_STATE_USB*/
 
 
 /* TODO:  Add any necessary local functions.
@@ -274,14 +292,27 @@ void APP_GEN_UPDATE_STATE_USB(bool state)
     See prototype in app_gen.h.
  */
 
+/********************************************************************************************************
+ * Nom de fonction: APP_GEN_Initialize
+ * Auteur: [JAR & LGA]
+ * Parametres: 
+ *   Entree: Aucune
+ *   Sortie: Aucune
+ * 
+ * Description: Cette fonction initialise la machine d'etat de l'application et les autres parametres
+ *              necessaires a son fonctionnement.
+ * 
+ ********************************************************************************************************/
 void APP_GEN_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
-    app_genData.state = APP_GEN_STATE_INIT;
-    app_genData.intTMR1 = false;
-    app_genData.flagAskToSave = false;
     app_genData.flagUpdateAffichageLCD = true;
+    app_genData.state = APP_GEN_STATE_INIT;
+    app_genData.usbIsConnected = false;
+    app_genData.flagAskToSave = false;
     app_genData.updateParams = false;
+    app_genData.intTMR1 = false;
+
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */
@@ -296,6 +327,25 @@ void APP_GEN_Initialize ( void )
     See prototype in app_gen.h.
  */
 
+/********************************************************************************************************
+ * Nom de fonction: APP_GEN_Tasks
+ * Auteur: [JAR & LGA]
+ * Parametres: 
+ *   Entree: Aucune
+ *   Sortie: Aucune
+ * 
+ * Description: Cette fonction gere la machine d'etat de l'application, en initialisant les composants
+ *              necessaires et en executant les taches de service selon l'etat actuel de l'application.
+ *              Dans l'init:    initialisation de LCD, LTC2604, MCP79411, PEC12, boutonInit
+ *                              test l'etat de l'usb, recupere les donnes en memorie en foncion de l'etat de l'USB
+ *                              intialise timers
+ * 
+ *              Dans service task:
+ *                              Test etat de l'usb et execute le menu en fonction de l'etat de l'usb
+ *              Dans le wait:
+ *                              Attente que flag intTMR1 = 1 (interruption timer 1)
+ * 
+ ********************************************************************************************************/
 void APP_GEN_Tasks ( void )
 {
     /* Check the application's current state. */
@@ -304,10 +354,10 @@ void APP_GEN_Tasks ( void )
         /* Application's initial state. */
         case APP_GEN_STATE_INIT:
         {
-                        // Initialisation de l'ï¿½cran LCD
+            // Initialisation de l'ecran LCD
             lcd_init();
             
-            // Allume le rï¿½troï¿½clairage de l'ï¿½cran LCD
+            // Allume le retroeclairage de l'ecran LCD
             lcd_bl_on();
             
             // Initialisation du BSP (Board Support Package)

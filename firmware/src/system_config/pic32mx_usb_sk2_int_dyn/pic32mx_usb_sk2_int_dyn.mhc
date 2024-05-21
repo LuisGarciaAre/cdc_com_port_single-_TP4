@@ -6,7 +6,7 @@
 #     Harmony version: 2.06
 #
 #
-# from $HARMONY_VERSION_PATH\apps\MINF\TP\TP4\cdc_com_port_single-_TP4\firmware\cdc_com_port_single_TP4.hconfig
+# from $HARMONY_VERSION_PATH\apps\usb\device\cdc_com_port_single _TP4\firmware\cdc_com_port_single_TP4.hconfig
 #
 CONFIG_APP_INSTANCES=2
 #
@@ -19,7 +19,7 @@ CONFIG_APP_MENU_IDX1=y
 CONFIG_APP_NAME_1="app_gen"
 CONFIG_APP_AUTO_GENERATE_CODE1=n
 #
-# from $HARMONY_VERSION_PATH\apps\MINF\TP\TP4\cdc_com_port_single-_TP4\firmware\cdc_com_port_single_TP4.hconfig
+# from $HARMONY_VERSION_PATH\apps\usb\device\cdc_com_port_single _TP4\firmware\cdc_com_port_single_TP4.hconfig
 #
 CONFIG_USE_EXCEPTION_HANDLER=y
 CONFIG_EXCEPTION_USE_SYS_DEBUG=y

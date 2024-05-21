@@ -114,15 +114,11 @@ typedef struct
 {
     /* The application's current state */
     APP_GEN_STATES state;
-    
-    bool intTMR1;
-    
-    bool usbIsConnected;
-    
     bool flagUpdateAffichageLCD;
+    bool usbIsConnected;
     bool flagAskToSave;
-    
     bool updateParams;
+    bool intTMR1;
 
     /* TODO: Define any additional data used by the application. */
 
