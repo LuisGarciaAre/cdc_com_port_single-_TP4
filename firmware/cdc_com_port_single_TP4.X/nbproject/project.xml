@@ -79,6 +79,7 @@
                 <sourceRootElem>..\src\system_config\pic32wk_poll_dyn</sourceRootElem>
                 <sourceRootElem>..\src\pic32wk_sk_poll_sta</sourceRootElem>
                 <sourceRootElem>..\src\system_config\pic32wk_sk_poll_sta</sourceRootElem>
+                <sourceRootElem>../../../../..</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

@@ -175,13 +175,14 @@ typedef struct
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_GEN_Initialize ( void );
+void APP_GEN_Initialize ( void );   // Initialise le générateur
 void APP_GEN_STORE_STR(uint8_t* str, uint32_t tailleChaine);
 void APP_GEN_GET_NEWSTR(uint8_t* strToSend, uint32_t* taillechaine);
+// Récupération du message USB et remplissage du buffer USB
 void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine);
 
-void APP_GEN_UPDATE_STATE_USB(bool state);
-void All_ledsBSP(bool stateLeds);
+void APP_GEN_UPDATE_STATE_USB(bool state);  // Met à jour l'état de la machine d'état USB
+void All_ledsBSP(bool stateLeds);   // Allume ou éteint toutes les leds
 
 extern APP_GEN_DATA app_genData;
 

@@ -253,14 +253,14 @@ void APP_USBDeviceEventHandler ( USB_DEVICE_EVENT event, void * eventData, uintp
 
             /* VBUS was detected. We can attach the device */
             USB_DEVICE_Attach(appData.deviceHandle);
-            APP_GEN_UPDATE_STATE_USB(true);
+            APP_GEN_UPDATE_STATE_USB(true); // Indique que l'USB est actif
             break;
 
         case USB_DEVICE_EVENT_POWER_REMOVED:
 
             /* VBUS is not available any more. Detach the device. */
             USB_DEVICE_Detach(appData.deviceHandle);
-            APP_GEN_UPDATE_STATE_USB(false);
+            APP_GEN_UPDATE_STATE_USB(false);    // Indique que l'USB est inactif
             break;
 
         case USB_DEVICE_EVENT_SUSPENDED:
@@ -478,17 +478,21 @@ void APP_Tasks (void )
             /* If a read is complete, then schedule a read
              * else wait for the current read to complete */
 
-            appData.state = APP_STATE_WAIT_FOR_READ_COMPLETE;
+            appData.state = APP_STATE_WAIT_FOR_READ_COMPLETE;   // Passer à l'état d'attente d'une lecture complete
             
+            // Si la lecture est complete
             if(appData.isReadComplete == true)
             {
+                // Indique que la lecture n'et pas complete
                 appData.isReadComplete = false;
                 appData.readTransferHandle =  USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
-
+                
+                // Lecture des données sur l'USB
                 USB_DEVICE_CDC_Read (USB_DEVICE_CDC_INDEX_0,
                         &appData.readTransferHandle, appData.readBuffer,
                         APP_READ_BUFFER_SIZE);
                 
+                // En cas de problème, passer dans l'état erreur de l'USB
                 if(appData.readTransferHandle == USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID)
                 {
                     appData.state = APP_STATE_ERROR;
@@ -555,8 +559,9 @@ void APP_Tasks (void )
                 }
             }
             
+            // Récupération du message USB et remplissage du buffer USB
             APP_GEN_GETSET_STR(appData.readBuffer, appData.numBytesRead);
-                        
+            // Envoy du message USB
             USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                     &appData.writeTransferHandle,
                     appData.readBuffer, appData.numBytesRead,

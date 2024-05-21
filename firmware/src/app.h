@@ -224,7 +224,7 @@ typedef struct
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_Initialize ( void );
+void APP_Initialize ( void );   // Initialisation de l'app
 
 
 /*******************************************************************************
@@ -257,7 +257,7 @@ void APP_Initialize ( void );
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_Tasks ( void );
+void APP_Tasks ( void );    // Execution de l'app
 
 
 #endif /* _APP_H */
