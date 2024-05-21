@@ -1,5 +1,5 @@
 build/pic32mx_usb_sk2_int_dyn/production/_ext/1360937237/MenuGen.o: \
- ../src/MenuGen.c ../src/app.h \
+ ../src/MenuGen.c ../src/app_gen.h \
  ../src/system_config/pic32mx_usb_sk2_int_dyn/system_config.h \
  ../../../../../../bsp/pic32mx_skes/bsp.h \
  ../../../../../../framework/peripheral/ports/plib_ports.h \
@@ -221,7 +221,7 @@ build/pic32mx_usb_sk2_int_dyn/production/_ext/1360937237/MenuGen.o: \
  ../../../../../../bsp/pic32mx_skes/Mc32DriverLcd.h \
  ../src/Mc32gestI2cSeeprom.h
 
-../src/app.h:
+../src/app_gen.h:
 
 ../src/system_config/pic32mx_usb_sk2_int_dyn/system_config.h:
 

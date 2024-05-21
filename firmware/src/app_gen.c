@@ -95,6 +95,78 @@ bool saveParams = false;
 // *****************************************************************************
 // *****************************************************************************
 
+/********************************************************************************************************
+ * Nom de fonction: APP_GEN_Callback_TMR1
+ * Auteur: [JAR & LGA]
+ * Paramètres: 
+ *   Entree: Aucune
+ *   Sortie: Aucune
+ * 
+ * Description: Cette fonction est le callback de l'interruption du timer 1. Elle gère les actions 
+ *              périodiques telles que le changement d'état d'une LED, le traitement antirebonds pour les 
+ *              entrées PEC12 et le bouton S9, et le passage à l'état de service des tâches de l'application 
+ *              après un délai de 10 ms.
+ * 
+ ********************************************************************************************************/
+void APP_GEN_Callback_TMR1(void)
+{
+    // Variables locales
+    static uint16_t cntStart = 0;           // Variable 16 bits compteur de start
+    static uint8_t cntCyclesProgram = 0;    // Variable 8 bits pour compteur de cycles de programme
+    
+    // Changement d'etat de led 1
+    LED1_W = !LED1_R;
+    
+    // Realise traitement d'antirebonds pour PEC12
+    ScanPec12(PEC12_A, PEC12_B, PEC12_PB);
+    
+    // Realise traitement d'antirebonds pour bouton S9
+    scan_btnOk();
+    
+    // Attente de 3s 
+    if(cntStart < VAL_WAIT_3S)
+    {
+        cntStart++;
+    }
+    else
+    {
+        // Realise le APP_STATE_SERVICE_TASKS chaque 10 cycles d'interruption (10 ms))
+        if(cntCyclesProgram < VAL_WAIT_10ms)
+        {
+            cntCyclesProgram++;
+        }
+        else
+        {
+            cntCyclesProgram = 0;
+            // Indique qu'un changement de etat de machine d'etat principale
+            app_genData.intTMR1 = true;
+        }
+    }
+}
+
+/********************************************************************************************************
+ * Nom de fonction: APP_GEN_Callback_TMR3
+ * Auteur: [JAR & LGA]
+ * Paramètres: 
+ *   Entree: Aucune
+ *   Sortie: Aucune
+ * 
+ * Description: Cette fonction est le callback de l'interruption du timer TMR3. Elle allume une LED, 
+ *              exécute une fonction d'envoi sur le DAC, puis éteint la LED.
+ * 
+ ********************************************************************************************************/
+void APP_GEN_Callback_TMR3(void)
+{
+    // Allume led 0
+    LED0_W  = 1;
+    
+    // Execute fonction d'envoi sur DAC
+    GENSIG_Execute();
+    
+    // Etetint led 0
+    LED0_W = 0;
+}
+
 /* TODO:  Add any necessary callback functions.
 */
 
@@ -104,179 +176,20 @@ bool saveParams = false;
 // *****************************************************************************
 // *****************************************************************************
 
-
-/* TODO:  Add any necessary local functions.
-*/
-
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Initialization and State Machine Functions
-// *****************************************************************************
-// *****************************************************************************
-
-/*******************************************************************************
-  Function:
-    void APP_GEN_Initialize ( void )
-
-  Remarks:
-    See prototype in app_gen.h.
- */
-
-void APP_GEN_Initialize ( void )
-{
-    /* Place the App state machine in its initial state. */
-    app_genData.state = APP_GEN_STATE_INIT;
-    
-    app_genData.readyToSend = true;
-    app_genData.strReceived = false;
-    app_genData.flagAskToSave = false;
-    app_genData.flagUpdateAffichageLCD = true;
-    app_genData.updateParams = false;
-
-    
-    /* TODO: Initialize your application's state machine and other
-     * parameters.
-     */
-}
-
-
-/******************************************************************************
-  Function:
-    void APP_GEN_Tasks ( void )
-
-  Remarks:
-    See prototype in app_gen.h.
- */
-
-void APP_GEN_Tasks ( void )
-{
-    /* Check the application's current state. */
-    switch ( app_genData.state )
-    {
-        /* Application's initial state. */
-        case APP_GEN_STATE_INIT:
-        {
-                        // Initialisation de l'écran LCD
-            lcd_init();
-            
-            // Allume le rétroéclairage de l'écran LCD
-            lcd_bl_on();
-            
-            // Initialisation du BSP (Board Support Package)
-            BSP_Initialize();
-
-            // Init SPI DAC
-            SPI_InitLTC2604();
-
-            // Init I2C EEPROM
-            I2C_InitMCP79411();
-            
-            // Initialisation PEC12
-            Pec12Init();
-            
-            // Initialisation de bouton S9
-            btnOKInit();
-            
-            if(app_genData.usbIsConnected == true)
-            {
-                // Initialisation du generateur
-                GENSIG_Initialize(&RemoteParamGen);
-                MENU_Initialize(&RemoteParamGen);
-            }
-            else
-            {
-                // Initialisation du menu
-                GENSIG_Initialize(&LocalParamGen);
-                MENU_Initialize(&LocalParamGen);
-            }
-            
-            // Eteint toutes les leds
-            All_ledsBSP(false);
-            
-            // Active les timers 
-            DRV_TMR0_Start();
-            DRV_TMR1_Start();
-            
-            RemoteParamGen = LocalParamGen;
-       
-            app_genData.state = APP_STATE_WAIT;
-            break;
-        }
-
-        case APP_GEN_STATE_SERVICE_TASKS:
-        {
-            if(app_genData.usbIsConnected == true)
-            {
-//                if(app_genData.strReceived == true)
-//                {
-//                    app_genData.strReceived = false;
-//                    
-//                    if(GetMessage((int8_t*)app_genData.str, &RemoteParamGen, &saveParams) == true)
-//                    {
-//                        SendMessage((int8_t*)app_genData.str, &RemoteParamGen, saveParams);
-//                        app_genData.readyToSend = true;
-//                        app_genData.flagUpdateAffichageLCD = true;
-//                    }  
-//                }
-  
-                MENU_Execute(&RemoteParamGen, true);
-            }
-            else
-            {
-                MENU_Execute(&LocalParamGen, false);
-            }
-
-            app_genData.state = APP_STATE_WAIT;
-            break;
-        }        
-        case APP_STATE_WAIT:
-        {
-            
-            break;
-        }
-
-        /* TODO: implement your application state machine.*/
-        
-
-        /* The default state should never be executed. */
-        default:
-        {
-            /* TODO: Handle error in application's state machine. */
-            break;
-        }
-    }
-}
-
-
-void APP_GEN_STORE_STR(uint8_t* str, uint32_t tailleChaine)
-{
-    app_genData.strReceived = true;
-    
-    if(tailleChaine > 64)
-    {
-        tailleChaine = 64;
-    }
-    
-    memcpy(app_genData.str, str, tailleChaine);
-    app_genData.str[tailleChaine] = '\0';
-}
-
-void APP_GEN_GET_NEWSTR(uint8_t* strToSend, uint32_t* taillechaine)
-{
-    char str[64] = {0};
-    
-    if(app_genData.readyToSend == true)
-    {
-        app_genData.readyToSend = false;
-        *taillechaine = strlen((char*)strToSend);
-        
-        memcpy(str, app_genData.str, *taillechaine);
-        memcpy(strToSend, app_genData.str, *taillechaine);
-    }
-    
-}
-
+/********************************************************************************************************
+ * Nom de fonction: APP_GEN_GETSET_STR
+ * Auteur: [JAR & LGA]
+ * Paramètres: 
+ *   Entree: 
+ *     - str : Pointeur vers la chaîne de caractères à traiter (uint8_t*)
+ *     - tailleChaine : Taille de la chaîne de caractères (uint32_t)
+ *   Sortie: Aucune
+ * 
+ * Description: Cette fonction copie une chaîne de caractères d'entrée dans un buffer local, puis utilise 
+ *              cette chaîne pour mettre à jour des paramètres à distance. Si les paramètres sont mis à jour, 
+ *              elle renvoie la chaîne modifiée et active un drapeau pour mettre à jour l'affichage LCD.
+ * 
+ ********************************************************************************************************/
 void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 {
     char strHERE[APP_GEN_TAILLE_MAX_STR];
@@ -289,14 +202,12 @@ void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
     memcpy(strHERE, str, tailleChaine);
     strHERE[tailleChaine] = '\0';
 
-
     app_genData.updateParams = GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams);
 
     if(app_genData.updateParams == true)
     {
         SendMessage((int8_t*)strHERE, &RemoteParamGen, saveParams);
         memcpy(str, strHERE, strlen(strHERE));
-        app_genData.readyToSend = true;
         app_genData.flagUpdateAffichageLCD = true;
     }  
 }
@@ -343,6 +254,145 @@ void APP_GEN_UPDATE_STATE_USB(bool state)
     app_genData.flagUpdateAffichageLCD = true;
     app_genData.updateParams = true;
 }
+
+
+/* TODO:  Add any necessary local functions.
+*/
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Application Initialization and State Machine Functions
+// *****************************************************************************
+// *****************************************************************************
+
+/*******************************************************************************
+  Function:
+    void APP_GEN_Initialize ( void )
+
+  Remarks:
+    See prototype in app_gen.h.
+ */
+
+void APP_GEN_Initialize ( void )
+{
+    /* Place the App state machine in its initial state. */
+    app_genData.state = APP_GEN_STATE_INIT;
+    app_genData.intTMR1 = false;
+    app_genData.flagAskToSave = false;
+    app_genData.flagUpdateAffichageLCD = true;
+    app_genData.updateParams = false;
+    /* TODO: Initialize your application's state machine and other
+     * parameters.
+     */
+}
+
+
+/******************************************************************************
+  Function:
+    void APP_GEN_Tasks ( void )
+
+  Remarks:
+    See prototype in app_gen.h.
+ */
+
+void APP_GEN_Tasks ( void )
+{
+    /* Check the application's current state. */
+    switch ( app_genData.state )
+    {
+        /* Application's initial state. */
+        case APP_GEN_STATE_INIT:
+        {
+                        // Initialisation de l'écran LCD
+            lcd_init();
+            
+            // Allume le rétroéclairage de l'écran LCD
+            lcd_bl_on();
+            
+            // Initialisation du BSP (Board Support Package)
+            BSP_Initialize();
+
+            // Init SPI DAC
+            SPI_InitLTC2604();
+
+            // Init I2C EEPROM
+            I2C_InitMCP79411();
+            
+            // Initialisation PEC12
+            Pec12Init();
+            
+            // Initialisation de bouton S9
+            btnOKInit();
+            
+            // Test si USB est connnecté sur kit
+            if(app_genData.usbIsConnected == true)
+            {
+                // Initialisation du generateur et menu en mode remote (usb connecté))
+                GENSIG_Initialize(&RemoteParamGen);
+                MENU_Initialize(&RemoteParamGen);
+                
+                // Synchronisation des parametres
+                LocalParamGen = RemoteParamGen;
+            }
+            else
+            {
+                // Initialisation du generateur et mnue en mode local (usb non connecté))
+                GENSIG_Initialize(&LocalParamGen);
+                MENU_Initialize(&LocalParamGen);
+                
+                // Synchronisation des parametres
+                RemoteParamGen = LocalParamGen;
+            }
+            
+            // Eteint toutes les leds
+            All_ledsBSP(false);
+            
+            // Active les timers 
+            DRV_TMR0_Start();
+            DRV_TMR1_Start();
+            
+            // Changement d'etat de machine d'etat
+            app_genData.state = APP_STATE_WAIT;
+            break;
+        }
+
+        case APP_GEN_STATE_SERVICE_TASKS:
+        {
+            if(app_genData.usbIsConnected == true)
+            {
+                MENU_Execute(&RemoteParamGen, true);
+            }
+            else
+            {
+                MENU_Execute(&LocalParamGen, false);
+            }
+
+            app_genData.state = APP_STATE_WAIT;
+            break;
+        }        
+        case APP_STATE_WAIT:
+        {
+            if(app_genData.intTMR1 == true)
+            {
+                app_genData.state = APP_GEN_STATE_SERVICE_TASKS;
+                app_genData.intTMR1 = false;
+            }
+            break;
+        }
+
+        /* TODO: implement your application state machine.*/
+        
+
+        /* The default state should never be executed. */
+        default:
+        {
+            /* TODO: Handle error in application's state machine. */
+            break;
+        }
+    }
+}
+
 /*******************************************************************************
  End of File
  */

@@ -60,11 +60,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 #include "system/common/sys_common.h"
-#include "app.h"
 #include "app_gen.h"
 #include "system_definitions.h"
-#include "../../GesPec12.h"
-#include "../../Generateur.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -72,57 +69,19 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 
- APP_GEN_DATA app_genData;
-
 void __ISR(_TIMER_1_VECTOR, ipl3AUTO) IntHandlerDrvTmrInstance0(void)
 {
-    // Variables locales
-    static uint16_t cntStart = 0;           // Variable 16 bits compteur de start
-    static uint8_t cntCyclesProgram = 0;    // Variable 8 bits pour compteur de cycles de programme
-    
-    // Changement d'etat de led 1
-    LED1_W = !LED1_R;
-    
-    // Realise traitement d'antirebonds pour PEC12
-    ScanPec12(PEC12_A, PEC12_B, PEC12_PB);
-    
-    // Realise traitement d'antirebonds pour bouton S9
-    scan_btnOk();
-    
-    // Attente de 3s 
-    if(cntStart < VAL_WAIT_3S)
-    {
-        cntStart++;
-    }
-    else
-    {
-        // Realise le APP_STATE_SERVICE_TASKS chaque 10 cycles d'interruption (10 ms))
-        if(cntCyclesProgram < VAL_WAIT_10ms)
-        {
-            cntCyclesProgram++;
-        }
-        else
-        {
-            cntCyclesProgram = 0;
-            app_genData.state = APP_GEN_STATE_SERVICE_TASKS;
-        }
-    }
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_1);
+    
+    APP_GEN_Callback_TMR1();
 }
 
 
 void __ISR(_TIMER_3_VECTOR, ipl7AUTO) IntHandlerDrvTmrInstance1(void)
 {
-    
-    // Allume led 0
-    LED0_W  = 1;
-    
-    // Execute fonction d'envoi sur DAC
-    GENSIG_Execute();
-    
-    // Etetint led 0
-    LED0_W = 0;
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_3);
+    
+    APP_GEN_Callback_TMR3();
 }
 
 

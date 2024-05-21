@@ -29,7 +29,7 @@
 #include "./Mc32DriverLcd.h"
 #include "Mc32Debounce.h"
 #include "bsp.h"
-#include "app.h"
+#include "app_gen.h"
 #include "stdbool.h"
 
 // Descripteur des sinaux
@@ -145,8 +145,8 @@ void ScanPec12 (bool ValA, bool ValB, bool ValPB)
    
    // Gestion inactivite
    // Eteint backligth si pas d'action sur pec12 ou btn s9 pendant 5 secondes
-   if((DebounceIsPressed(&DescrB) == false) && (DebounceIsPressed(&DescrPB) == false)
-       && BtnS9IsESC() == false && BtnS9IsSave() == false && app_genData.flagUpdateAffichageLCD == false)
+   if((!DebounceIsPressed(&DescrB)) && (!DebounceIsPressed(&DescrPB))
+       && (!BtnS9IsESC()) && (!BtnS9IsSave()) && (!app_genData.flagUpdateAffichageLCD))
    {
        
        if(Pec12.InactivityDuration == TIMEOUT_INACTIVITY)

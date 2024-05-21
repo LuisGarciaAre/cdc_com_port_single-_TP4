@@ -1,6 +1,6 @@
 build/pic32mx_usb_sk2_int_dyn/production/_ext/1774247193/system_interrupt.o: \
  ../src/system_config/pic32mx_usb_sk2_int_dyn/system_interrupt.c \
- ../../../../../../framework/system/common/sys_common.h ../src/app.h \
+ ../../../../../../framework/system/common/sys_common.h ../src/app_gen.h \
  ../src/system_config/pic32mx_usb_sk2_int_dyn/system_config.h \
  ../../../../../../bsp/pic32mx_skes/bsp.h \
  ../../../../../../framework/peripheral/ports/plib_ports.h \
@@ -215,15 +215,12 @@ build/pic32mx_usb_sk2_int_dyn/production/_ext/1774247193/system_interrupt.o: \
  ../../../../../../framework/usb/src/usb_device_mapping.h \
  ../../../../../../framework/usb/usb_device_cdc.h \
  ../../../../../../framework/usb/src/usb_device_function_driver.h \
- ../../../../../../framework/usb/usb_cdc.h ../src/app_gen.h \
- ../src/system_config/pic32mx_usb_sk2_int_dyn/system_definitions.h \
- ../src/system_config/pic32mx_usb_sk2_int_dyn/../../GesPec12.h \
- ../src/system_config/pic32mx_usb_sk2_int_dyn/../../Generateur.h \
- ../src/system_config/pic32mx_usb_sk2_int_dyn/../../DefMenuGen.h
+ ../../../../../../framework/usb/usb_cdc.h ../src/app.h \
+ ../src/system_config/pic32mx_usb_sk2_int_dyn/system_definitions.h
 
 ../../../../../../framework/system/common/sys_common.h:
 
-../src/app.h:
+../src/app_gen.h:
 
 ../src/system_config/pic32mx_usb_sk2_int_dyn/system_config.h:
 
@@ -655,12 +652,6 @@ build/pic32mx_usb_sk2_int_dyn/production/_ext/1774247193/system_interrupt.o: \
 
 ../../../../../../framework/usb/usb_cdc.h:
 
-../src/app_gen.h:
+../src/app.h:
 
 ../src/system_config/pic32mx_usb_sk2_int_dyn/system_definitions.h:
-
-../src/system_config/pic32mx_usb_sk2_int_dyn/../../GesPec12.h:
-
-../src/system_config/pic32mx_usb_sk2_int_dyn/../../Generateur.h:
-
-../src/system_config/pic32mx_usb_sk2_int_dyn/../../DefMenuGen.h:

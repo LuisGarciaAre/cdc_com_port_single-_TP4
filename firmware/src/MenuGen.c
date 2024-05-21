@@ -7,7 +7,7 @@
 #include <stdint.h>                   
 #include <stdbool.h>
 
-#include "app.h"
+#include "app_gen.h"
 #include "MenuGen.h"
 #include "GesPec12.h"
 #include "Generateur.h"
@@ -67,7 +67,14 @@ void MENU_Execute(S_ParamGen *pParam, bool connectionIsRemote)
     static e_MENU_STATE stateMenu = USER_CHOICE;    // Variable de machine d'etat principale
     static uint8_t indexMenu = LIMIT_MIN_DISPLAY;                   // Variable d'index/curseur de menu
     static bool usbWasconnected = false;
+    static bool firstPower = true;
     uint8_t indexLigne;                             // Variable d'index de boucle for
+    
+    if(firstPower == true)
+    {
+        Update_GENparams(pParam);
+        firstPower = false;
+    }
     
     if(app_genData.flagUpdateAffichageLCD == true)
     {

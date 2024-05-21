@@ -435,7 +435,6 @@ void APP_Tasks (void )
 {
     /* Update the application state machine based
      * on the current state */
-    int i = 0; 
     switch(appData.state)
     {
         case APP_STATE_INIT:
@@ -531,29 +530,6 @@ void APP_Tasks (void )
             appData.writeTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
             appData.isWriteComplete = false;
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
-
-//            if(appData.isSwitchPressed)
-//            {
-//                /* If the switch was pressed, then send the switch prompt*/
-//                appData.isSwitchPressed = false;
-//                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-//                        &appData.writeTransferHandle, switchPromptUSB, 23,
-//                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-//            }
-//            else
-//            {
-//
-//            }
-            
-            /* Else echo each received character by adding 1 */           
-            
-            for(i=0; i<appData.numBytesRead; i++)
-            {
-                if((appData.readBuffer[i] != 0x0A) && (appData.readBuffer[i] != 0x0D))
-                {
-                    appData.readBuffer[i] = appData.readBuffer[i];
-                }
-            }
             
             APP_GEN_GETSET_STR(appData.readBuffer, appData.numBytesRead);
                         

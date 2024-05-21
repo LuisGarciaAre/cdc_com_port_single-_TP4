@@ -29,14 +29,14 @@ int32_t signal_calculer [MAX_ECH];
 
 /********************************************************************************************************
  * Nom de fonction: GENSIG_Initialize
- * Auteur: [DBS & LGA]
+ * Auteur: [JAR & LGA]
  * Param?tres: 
- *   Entr?e: pParam -> Pointeur vers une structure de type S_ParamGen contenant les param?tres du g?n?rateur
+ *   Entree: pParam -> Pointeur vers une structure de type S_ParamGen contenant les parametres du generateur
  *   Sortie: Aucune
  * 
- * Description: Cette fonction initialise le g?n?rateur avec des param?tres par d?faut s'il n'y a pas de 
- *              donn?es sauvegard?es en m?moire, sinon elle initialise le g?n?rateur avec les donn?es 
- *              r?cup?r?es en m?moire.
+ * Description: Cette fonction initialise le geneerateur avec des paramatres par defaut s'il n'y a pas de 
+ *              donnees sauvegardees en memoire, sinon elle initialise le generateur avec les donnees 
+ *              recuperees en memoire.
  * 
  ********************************************************************************************************/
 void  GENSIG_Initialize(S_ParamGen *pParam)
@@ -80,11 +80,10 @@ void  GENSIG_Initialize(S_ParamGen *pParam)
  ********************************************************************************************************/
 void  GENSIG_UpdatePeriode(S_ParamGen *pParam)
 {
-    S_ParamGen localParams = *pParam;
     static uint16_t val_du_conteur_Timer3 ;
 
     // Calcul de la p?riode d'?chantillonnage
-    val_du_conteur_Timer3 = (((VALEUR_POUR_TRANSFORMATION_timer3 /localParams.Frequence)-1)+0.5 );
+    val_du_conteur_Timer3 = (((VALEUR_POUR_TRANSFORMATION_timer3 /pParam->Frequence)-1)+0.5 );
         
     // Mise ? jour de la p?riode du timer 3
     PLIB_TMR_Period16BitSet(TMR_ID_3, val_du_conteur_Timer3);
@@ -219,7 +218,7 @@ void  GENSIG_Execute(void)
 {
    static uint16_t EchNb = 0;
    // Envoie la valeur du signal calcul? au DAC sur le canal 0
-   SPI_WriteToDac(0, signal_calculer [EchNb]  );     
+   SPI_WriteToDac(0, signal_calculer [EchNb]);     
    
    // Incr?mente le num?ro d'?chantillon
    EchNb++;

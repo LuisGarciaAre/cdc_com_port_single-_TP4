@@ -4,7 +4,7 @@
 // Canevas TP4 SLO2 2015-2015
 
 
-#include "app.h"
+#include "app_gen.h"
 #include "Mc32gest_SerComm.h"
 #include "DefMenuGen.h"
 

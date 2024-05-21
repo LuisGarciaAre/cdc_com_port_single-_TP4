@@ -115,10 +115,9 @@ typedef struct
     /* The application's current state */
     APP_GEN_STATES state;
     
+    bool intTMR1;
+    
     bool usbIsConnected;
-    bool readyToSend;
-    bool strReceived;
-    uint8_t* str[APP_GEN_TAILLE_MAX_STR];
     
     bool flagUpdateAffichageLCD;
     bool flagAskToSave;
@@ -176,15 +175,15 @@ typedef struct
 */
 
 void APP_GEN_Initialize ( void );
-void APP_GEN_STORE_STR(uint8_t* str, uint32_t tailleChaine);
-void APP_GEN_GET_NEWSTR(uint8_t* strToSend, uint32_t* taillechaine);
 void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine);
 
 void APP_GEN_UPDATE_STATE_USB(bool state);
 void All_ledsBSP(bool stateLeds);
 
-extern APP_GEN_DATA app_genData;
+void APP_GEN_Callback_TMR1(void);
+void APP_GEN_Callback_TMR3(void);
 
+extern APP_GEN_DATA app_genData;
 
 
 /*******************************************************************************

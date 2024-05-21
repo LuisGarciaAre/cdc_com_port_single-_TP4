@@ -1,5 +1,5 @@
 build/pic32mx_usb_sk2_int_dyn/production/_ext/1360937237/Mc32gest_SerComm.o: \
- ../src/Mc32gest_SerComm.c ../src/app.h \
+ ../src/Mc32gest_SerComm.c ../src/app_gen.h \
  ../src/system_config/pic32mx_usb_sk2_int_dyn/system_config.h \
  ../../../../../../bsp/pic32mx_skes/bsp.h \
  ../../../../../../framework/peripheral/ports/plib_ports.h \
@@ -218,7 +218,7 @@ build/pic32mx_usb_sk2_int_dyn/production/_ext/1360937237/Mc32gest_SerComm.o: \
  ../../../../../../framework/usb/usb_cdc.h ../src/app.h ../src/app_gen.h \
  ../src/Mc32gest_SerComm.h ../src/DefMenuGen.h
 
-../src/app.h:
+../src/app_gen.h:
 
 ../src/system_config/pic32mx_usb_sk2_int_dyn/system_config.h:
 
