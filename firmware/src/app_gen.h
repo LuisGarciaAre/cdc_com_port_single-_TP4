@@ -177,8 +177,8 @@ typedef struct
 void APP_GEN_Initialize ( void );
 void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine);
 
-void APP_GEN_UPDATE_STATE_USB(bool state);
-void All_ledsBSP(bool stateLeds);
+void APP_GEN_UPDATE_STATE_USB(bool state);  // Met � jour l'�tat de la machine d'�tat USB
+void All_ledsBSP(bool stateLeds);   // Allume ou �teint toutes les leds
 
 void APP_GEN_Callback_TMR1(void);
 void APP_GEN_Callback_TMR3(void);

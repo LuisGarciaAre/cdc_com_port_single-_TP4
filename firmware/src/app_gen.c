@@ -98,14 +98,14 @@ bool saveParams = false;
 /********************************************************************************************************
  * Nom de fonction: APP_GEN_Callback_TMR1
  * Auteur: [JAR & LGA]
- * Paramètres: 
+ * Paramï¿½tres: 
  *   Entree: Aucune
  *   Sortie: Aucune
  * 
- * Description: Cette fonction est le callback de l'interruption du timer 1. Elle gère les actions 
- *              périodiques telles que le changement d'état d'une LED, le traitement antirebonds pour les 
- *              entrées PEC12 et le bouton S9, et le passage à l'état de service des tâches de l'application 
- *              après un délai de 10 ms.
+ * Description: Cette fonction est le callback de l'interruption du timer 1. Elle gï¿½re les actions 
+ *              pï¿½riodiques telles que le changement d'ï¿½tat d'une LED, le traitement antirebonds pour les 
+ *              entrï¿½es PEC12 et le bouton S9, et le passage ï¿½ l'ï¿½tat de service des tï¿½ches de l'application 
+ *              aprï¿½s un dï¿½lai de 10 ms.
  * 
  ********************************************************************************************************/
 void APP_GEN_Callback_TMR1(void)
@@ -147,12 +147,12 @@ void APP_GEN_Callback_TMR1(void)
 /********************************************************************************************************
  * Nom de fonction: APP_GEN_Callback_TMR3
  * Auteur: [JAR & LGA]
- * Paramètres: 
+ * Paramï¿½tres: 
  *   Entree: Aucune
  *   Sortie: Aucune
  * 
  * Description: Cette fonction est le callback de l'interruption du timer TMR3. Elle allume une LED, 
- *              exécute une fonction d'envoi sur le DAC, puis éteint la LED.
+ *              exï¿½cute une fonction d'envoi sur le DAC, puis ï¿½teint la LED.
  * 
  ********************************************************************************************************/
 void APP_GEN_Callback_TMR3(void)
@@ -179,28 +179,28 @@ void APP_GEN_Callback_TMR3(void)
 /********************************************************************************************************
  * Nom de fonction: APP_GEN_GETSET_STR
  * Auteur: [JAR & LGA]
- * Paramètres: 
+ * Paramï¿½tres: 
  *   Entree: 
- *     - str : Pointeur vers la chaîne de caractères à traiter (uint8_t*)
- *     - tailleChaine : Taille de la chaîne de caractères (uint32_t)
+ *     - str : Pointeur vers la chaï¿½ne de caractï¿½res ï¿½ traiter (uint8_t*)
+ *     - tailleChaine : Taille de la chaï¿½ne de caractï¿½res (uint32_t)
  *   Sortie: Aucune
  * 
- * Description: Cette fonction copie une chaîne de caractères d'entrée dans un buffer local, puis utilise 
- *              cette chaîne pour mettre à jour des paramètres à distance. Si les paramètres sont mis à jour, 
- *              elle renvoie la chaîne modifiée et active un drapeau pour mettre à jour l'affichage LCD.
+ * Description: Cette fonction copie une chaï¿½ne de caractï¿½res d'entrï¿½e dans un buffer local, puis utilise 
+ *              cette chaï¿½ne pour mettre ï¿½ jour des paramï¿½tres ï¿½ distance. Si les paramï¿½tres sont mis ï¿½ jour, 
+ *              elle renvoie la chaï¿½ne modifiï¿½e et active un drapeau pour mettre ï¿½ jour l'affichage LCD.
  * 
  ********************************************************************************************************/
 void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 {
-    char strHERE[APP_GEN_TAILLE_MAX_STR];
+    char strMessage[APP_GEN_TAILLE_MAX_STR];    // Tableau de sauvegarde du message
     
     if(tailleChaine > APP_GEN_TAILLE_MAX_STR)
     {
         tailleChaine = APP_GEN_TAILLE_MAX_STR;
     }
     
-    memcpy(strHERE, str, tailleChaine);
-    strHERE[tailleChaine] = '\0';
+    memcpy(strMessage, str, tailleChaine);  // Copie des caractï¿½res reï¿½us
+    strMessage[tailleChaine] = '\0';    // Indique la fin de la cahaine
 
     app_genData.updateParams = GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams);
 
@@ -215,15 +215,15 @@ void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 /********************************************************************************************************
  * Nom de fonction: All_leds
  * Auteur: [DBS & LGA]
- * Paramètres: 
- *   Entrée: state -> variable 8 bits non signé, État des LEDs (1 pour allumer, 0 pour éteindre)
+ * Paramï¿½tres: 
+ *   Entrï¿½e: state -> variable 8 bits non signï¿½, ï¿½tat des LEDs (1 pour allumer, 0 pour ï¿½teindre)
  *   Sortie: Aucune
  * 
- * Description: Cette fonction contrôle l'état de toutes les LEDs sur la carte. Si l'état passé en 
- *              paramètre est 1, toutes les LEDs sont allumées. Sinon, si l'état est 0, toutes les 
- *              LEDs sont éteintes.
+ * Description: Cette fonction contrï¿½le l'ï¿½tat de toutes les LEDs sur la carte. Si l'ï¿½tat passï¿½ en 
+ *              paramï¿½tre est 1, toutes les LEDs sont allumï¿½es. Sinon, si l'ï¿½tat est 0, toutes les 
+ *              LEDs sont ï¿½teintes.
  * 
- * Remarque: Cette fonction utilise des macros BSP_LEDOn et BSP_LEDOff pour contrôler les LEDs.
+ * Remarque: Cette fonction utilise des macros BSP_LEDOn et BSP_LEDOff pour contrï¿½ler les LEDs.
  ********************************************************************************************************/
 void All_ledsBSP(bool stateLeds)
 {
@@ -304,10 +304,10 @@ void APP_GEN_Tasks ( void )
         /* Application's initial state. */
         case APP_GEN_STATE_INIT:
         {
-                        // Initialisation de l'écran LCD
+                        // Initialisation de l'ï¿½cran LCD
             lcd_init();
             
-            // Allume le rétroéclairage de l'écran LCD
+            // Allume le rï¿½troï¿½clairage de l'ï¿½cran LCD
             lcd_bl_on();
             
             // Initialisation du BSP (Board Support Package)
@@ -325,10 +325,10 @@ void APP_GEN_Tasks ( void )
             // Initialisation de bouton S9
             btnOKInit();
             
-            // Test si USB est connnecté sur kit
+            // Test si USB est connnectï¿½ sur kit
             if(app_genData.usbIsConnected == true)
             {
-                // Initialisation du generateur et menu en mode remote (usb connecté))
+                // Initialisation du generateur et menu en mode remote (usb connectï¿½))
                 GENSIG_Initialize(&RemoteParamGen);
                 MENU_Initialize(&RemoteParamGen);
                 
@@ -337,7 +337,7 @@ void APP_GEN_Tasks ( void )
             }
             else
             {
-                // Initialisation du generateur et mnue en mode local (usb non connecté))
+                // Initialisation du generateur et mnue en mode local (usb non connectï¿½))
                 GENSIG_Initialize(&LocalParamGen);
                 MENU_Initialize(&LocalParamGen);
                 
