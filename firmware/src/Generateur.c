@@ -51,14 +51,9 @@ void  GENSIG_Initialize(S_ParamGen *pParam)
     if(valeursParamGem.Magic == MAGIC)
     {
         *pParam = valeursParamGem;
-        lcd_gotoxy(1,4);
-        printf_lcd("Donnes en memoire");
     }
     else 
     {
-        lcd_gotoxy(1,4);
-        printf_lcd("Donnees par defaut");
-        
         // Initialisation des param?tres par d?faut
         pParam->Forme = Sinus;
         pParam->Amplitude = 10000;     

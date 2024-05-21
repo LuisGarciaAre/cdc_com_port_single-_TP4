@@ -555,7 +555,7 @@ void APP_Tasks (void )
                 }
             }
             
-            APP_GEN_CRAZY(appData.readBuffer, appData.numBytesRead);
+            APP_GEN_GETSET_STR(appData.readBuffer, appData.numBytesRead);
                         
             USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                     &appData.writeTransferHandle,

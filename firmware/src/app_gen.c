@@ -197,6 +197,8 @@ void APP_GEN_Tasks ( void )
             // Active les timers 
             DRV_TMR0_Start();
             DRV_TMR1_Start();
+            
+            RemoteParamGen = LocalParamGen;
        
             app_genData.state = APP_STATE_WAIT;
             break;
@@ -275,9 +277,8 @@ void APP_GEN_GET_NEWSTR(uint8_t* strToSend, uint32_t* taillechaine)
     
 }
 
-void APP_GEN_CRAZY(uint8_t* str, uint32_t tailleChaine)
+void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 {
-    app_genData.strReceived = true;
     char strHERE[APP_GEN_TAILLE_MAX_STR];
     
     if(tailleChaine > APP_GEN_TAILLE_MAX_STR)
@@ -287,23 +288,17 @@ void APP_GEN_CRAZY(uint8_t* str, uint32_t tailleChaine)
     
     memcpy(strHERE, str, tailleChaine);
     strHERE[tailleChaine] = '\0';
-    
-    if(app_genData.usbIsConnected == true)
-    {
-        if(app_genData.strReceived == true)
-        {
-            app_genData.strReceived = false;
-            app_genData.updateParams = GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams);
 
-            if(app_genData.updateParams == true)
-            {
-                SendMessage((int8_t*)strHERE, &RemoteParamGen, saveParams);
-                memcpy(str, strHERE, strlen(strHERE));
-                app_genData.readyToSend = true;
-                app_genData.flagUpdateAffichageLCD = true;
-            }  
-        }
-    }
+
+    app_genData.updateParams = GetMessage((int8_t*)strHERE, &RemoteParamGen, &saveParams);
+
+    if(app_genData.updateParams == true)
+    {
+        SendMessage((int8_t*)strHERE, &RemoteParamGen, saveParams);
+        memcpy(str, strHERE, strlen(strHERE));
+        app_genData.readyToSend = true;
+        app_genData.flagUpdateAffichageLCD = true;
+    }  
 }
 
 /********************************************************************************************************
@@ -346,6 +341,7 @@ void APP_GEN_UPDATE_STATE_USB(bool state)
 {
     app_genData.usbIsConnected = state;
     app_genData.flagUpdateAffichageLCD = true;
+    app_genData.updateParams = true;
 }
 /*******************************************************************************
  End of File

@@ -32,8 +32,17 @@ void MENU_Initialize(S_ParamGen *pParam)
     printf_lcd("Garcia Luis");
     lcd_gotoxy(1,3);
     printf_lcd("Jeremy Affolter");
-    GENSIG_UpdatePeriode(pParam);
-    GENSIG_UpdateSignal(pParam);
+    
+    if(pParam->Magic == MAGIC)
+    {
+        lcd_gotoxy(1,4);
+        printf_lcd("Donnes en memoire");
+    }
+    else
+    {
+        lcd_gotoxy(1,4);
+        printf_lcd("Donnees par defaut");   
+    }
 }/*Fin de fonction MENU_Initialize*/
 
 
@@ -57,6 +66,7 @@ void MENU_Execute(S_ParamGen *pParam, bool connectionIsRemote)
     static S_ParamGen tempParams;                   // Variable de sauvegarde temporelle des parametres de pParam
     static e_MENU_STATE stateMenu = USER_CHOICE;    // Variable de machine d'etat principale
     static uint8_t indexMenu = LIMIT_MIN_DISPLAY;                   // Variable d'index/curseur de menu
+    static bool usbWasconnected = false;
     uint8_t indexLigne;                             // Variable d'index de boucle for
     
     if(app_genData.flagUpdateAffichageLCD == true)
@@ -73,7 +83,8 @@ void MENU_Execute(S_ParamGen *pParam, bool connectionIsRemote)
         case USER_CHOICE:
         { 
             if(connectionIsRemote == true)
-            {                                        
+            {
+                usbWasconnected = true;
                 if(app_genData.flagAskToSave == true)
                 { 
                     if(SaveParamsOnMemory(pParam))
@@ -91,6 +102,12 @@ void MENU_Execute(S_ParamGen *pParam, bool connectionIsRemote)
             }
             else
             {
+                if(usbWasconnected == true)
+                {
+                    Update_GENparams(pParam);
+                    usbWasconnected = false;
+                }
+                
                 if(Pec12IsPlus() == true)
                 {
                     Pec12ClearPlus();

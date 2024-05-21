@@ -178,7 +178,7 @@ typedef struct
 void APP_GEN_Initialize ( void );
 void APP_GEN_STORE_STR(uint8_t* str, uint32_t tailleChaine);
 void APP_GEN_GET_NEWSTR(uint8_t* strToSend, uint32_t* taillechaine);
-void APP_GEN_CRAZY(uint8_t* str, uint32_t tailleChaine);
+void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine);
 
 void APP_GEN_UPDATE_STATE_USB(bool state);
 void All_ledsBSP(bool stateLeds);
