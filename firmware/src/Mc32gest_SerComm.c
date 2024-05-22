@@ -98,9 +98,8 @@ bool GetMessage(int8_t *USBReadBuffer, S_ParamGen *pParam, bool *SaveTodo)
  **********************************************************************************************/
 void SendMessage(int8_t *USBSendBuffer, S_ParamGen *pParam, bool Saved )
 {
-    char str[64] = {0};
+    // Ajout de lettre P en fonction de parametre "saved" pour aquiter message reçu
     sprintf((char*)USBSendBuffer, "!S=%sF=%dA=%dO=%dWP=%d#", ConvertFormeToChar(pParam->Forme), pParam->Frequence, pParam->Amplitude, pParam->Offset, Saved);
-    memcpy(str, (char*)USBSendBuffer, strlen((char*)USBSendBuffer));
 } // SendMessage
 
 /**********************************************************************************************

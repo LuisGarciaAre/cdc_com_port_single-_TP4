@@ -234,7 +234,7 @@ void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
 void All_ledsBSP(bool stateLeds)
 {
     BSP_LED tabBSPLeds[8] = {   BSP_LED_0, BSP_LED_1, BSP_LED_2, BSP_LED_3, 
-                                BSP_LED_4, BSP_LED_5, BSP_LED_6, BSP_LED_7};
+                                BSP_LED_4, BSP_LED_5, BSP_LED_6, BSP_LED_7  };
     uint8_t numLed = 0;
     
     if(stateLeds == false)
@@ -378,7 +378,7 @@ void APP_GEN_Tasks ( void )
             // Test si USB est connnect� sur kit
             if(app_genData.usbIsConnected == true)
             {
-                // Initialisation du generateur et menu en mode remote (usb connect�))
+                // Initialisation du generateur et menu en mode remote (usb connecte))
                 GENSIG_Initialize(&RemoteParamGen);
                 MENU_Initialize(&RemoteParamGen);
                 
@@ -387,7 +387,7 @@ void APP_GEN_Tasks ( void )
             }
             else
             {
-                // Initialisation du generateur et mnue en mode local (usb non connect�))
+                // Initialisation du generateur et mnue en mode local (usb non connecte))
                 GENSIG_Initialize(&LocalParamGen);
                 MENU_Initialize(&LocalParamGen);
                 
