@@ -206,6 +206,15 @@
         <itemPath>../src/main.c</itemPath>
         <itemPath>../src/app_gen.c</itemPath>
         <itemPath>../src/Mc32gestI2cSeeprom.c</itemPath>
+        <itemPath>../src/Generateur.c</itemPath>
+        <itemPath>../src/GesPec12.c</itemPath>
+        <itemPath>../src/Mc32_I2cUtilCCS.c</itemPath>
+        <itemPath>../src/Mc32Debounce.c</itemPath>
+        <itemPath>../src/Mc32gest_SerComm.c</itemPath>
+        <itemPath>../src/Mc32gestSPiDac.c</itemPath>
+        <itemPath>../src/Mc32NVMUtil.c</itemPath>
+        <itemPath>../src/Mc32SpiUtil.c</itemPath>
+        <itemPath>../src/MenuGen.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="bsp" projectFiles="true">
         <logicalFolder name="f1" displayName="pic32mx_skes" projectFiles="true">
@@ -267,15 +276,6 @@
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/Generateur.c</itemPath>
-      <itemPath>../src/GesPec12.c</itemPath>
-      <itemPath>../src/Mc32Debounce.c</itemPath>
-      <itemPath>../src/Mc32SpiUtil.c</itemPath>
-      <itemPath>../src/Mc32gestSPiDac.c</itemPath>
-      <itemPath>../src/MenuGen.c</itemPath>
-      <itemPath>../src/Mc32NVMUtil.c</itemPath>
-      <itemPath>../src/Mc32gest_SerComm.c</itemPath>
-      <itemPath>../src/Mc32_I2cUtilCCS.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
