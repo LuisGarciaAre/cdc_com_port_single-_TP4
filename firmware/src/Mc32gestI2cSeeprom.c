@@ -29,9 +29,6 @@
 // #define I2C-SCK  SCL2/RA2      PORTAbits.RA2   pin 58
 // #define I2C-SDA  SDa2/RA3      PORTAbits.RA3   pin 59
 
-
-
-
 // Initialisation de la communication I2C et du MCP79411
 // ------------------------------------------------
 

@@ -201,7 +201,7 @@ void APP_GEN_GETSET_STR(uint8_t* str, uint32_t tailleChaine)
     }
     
     memcpy(strMessage, str, tailleChaine);  // Copie des carateres reçus sur tableau local
-    strMessage[tailleChaine] = '\0';    // Indique la fin de la cahaine
+    strMessage[tailleChaine] = '\0';    // Indique la fin de la chaine
     
     // Indique qu'il faut mettre à jour si valeurs des parametres recuperes
     app_genData.updateParams = GetMessage((int8_t*)strMessage, &RemoteParamGen, &saveParams);
